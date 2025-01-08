@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up </title>
+</head>
+<body>
+    <h3>
+        Sign Up /Create a new account
+    </h3>
+
+    <p></p>
+    <form action="{% url 'signup' %}" method="post">
+    {% csrf_token %}
+        <input type="text" name="username" id="username" placeholder="Enter a username"><br><br>
+        <input type="email" name="email" id="email" placeholder="Enter your email"><br><br>
+        <input type="password" name="password" id="password" placeholder="Create a password"><br><br>
+        <input type="password" name="password2" id="password2" placeholder="Confirm your password"><br><br>
+
+        <!-- Radio buttons for selecting role -->
+        <label for="role">Select your role:</label><br>
+        <input type="radio" name="role" value="admin" id="admin" required>
+        <label for="admin">Admin</label><br>
+        <input type="radio" name="role" value="employee" id="employee" required>
+        <label for="employee">Employee</label><br><br>
+        
+        <button type="submit">Sign Up</button><br>
+
+        <p></p>
+        <a href="{% url 'login' %}">I already have an account</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Detail</title>
+    <!-- Link your CSS file -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Employee Details</h1>
+        <div class="employee-details">
+            <p><strong>Name:</strong> {{ employee.name }}</p>
+            <p><strong>Salary:</strong> ${{ employee.salary }}</p>
+            <p><strong>Position:</strong> {{ employee.position }}</p>
+            <p><strong>Department:</strong> {{ employee.department }}</p>
+            <p><strong>Contact Number:</strong> {{ employee.contact_number }}</p>
+            <p><strong>Hiring Date:</strong> {{ employee.hiring_date }}</p>
+        </div>
+
+        <div class="actions">
+            <a href="{% url 'edit_employee' employee.id %}" class="btn btn-edit">Edit</a>
+            <a href="{% url 'delete_employee' employee.id %}" class="btn btn-delete">Delete</a>
+            <!-- <a href="{% url 'home' %}" class="btn btn-back">Back to Home</a> -->
+        </div>
+    </div>
+
+    <!-- Add any JavaScript file if needed -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

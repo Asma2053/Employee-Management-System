@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Employee</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/employee_search.css' %}">
+    <script src="{% static 'js/create_employee.js' %}"></script>
+
+</head>
+
+<body>
+    <h1>Add Employee</h1>
+    <form method="post" action="{% url 'create_employeeData' %}">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" placeholder="Search for a user">
+        <div id="suggestions"></div>
+        <br>
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>
