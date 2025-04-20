@@ -16,8 +16,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const message = sidebar.classList.contains("close")
             ? "Sidebar collapsed!"
             : "Sidebar expanded!";
-        showToast(message); // Optionally display a toast message
+        // showToast(message); // Optionally display a toast message
     });
+
 
     // Open sidebar on search box click
     if (searchBtn) {
@@ -56,4 +57,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
+
+    
 });

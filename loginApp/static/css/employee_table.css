@@ -1,0 +1,129 @@
+/* General styling */
+.home {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    /* Move buttons to the right */
+    padding: 10px 20px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Table Header */
+thead th {
+    color: white;
+    /* White text */
+    background-color: #007BFF;
+    /* Blue background */
+    font-weight: bold;
+}
+
+thead th a {
+    color: white;
+    /* Ensure links are also white */
+    text-decoration: none;
+}
+
+thead th a:visited {
+    color: white;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Alternating Row Colors */
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+    /* Light grey */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #e6f2ff;
+    /* Light blue */
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background-color: #cce5ff !important;
+    /* Brighter blue */
+    transition: 0.3s;
+}
+
+/* Action Buttons */
+button {
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    margin: 2px;
+}
+
+button[type="submit"] {
+    background-color: #dc3545;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #c82333;
+}
+
+button[type="button"],
+form[action*="edit_employee"] button {
+    background-color: #28a745;
+    color: white;
+}
+
+button[type="button"]:hover,
+form[action*="edit_employee"] button:hover {
+    background-color: #218838;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    /* Space between buttons */
+}
+
+.button-container button {
+    padding: 5px 10px;
+    /* Make buttons smaller */
+    font-size: 12px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007BFF;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #218838;
+}

@@ -1,0 +1,45 @@
+{% extends 'loginApp/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/employee_table.css' %}">
+<link rel="stylesheet" href="{% static 'css/attendance.css' %}">
+<script src="{% static 'js/attendance.js' %}"></script>
+
+<div class="Welcome">
+    {% if user %}
+    <!-- Add CSRF token here (hidden input) -->
+    <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+    <h2>Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
+    <div class="button-wrapper">
+        <div class="button-container">
+            <button class="btn-primary" onclick="buttonOneClick()">Clock In</button>
+            <button class="btn-secondary" onclick="buttonTwoClick()">Clock Out</button>
+        </div>
+    </div>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Joined Date</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.date_joined }}</td>
+                <td>{{ user.email }}</td> 
+            </tr>
+        </tbody>
+    </table>
+    {% else %}
+    <p>No user found. Please log in.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

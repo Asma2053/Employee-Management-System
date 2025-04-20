@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 import os
@@ -22,13 +23,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Q
 from django.middleware.csrf import get_token
-
-
+from datetime import date, datetime
+from datetime import datetime, timezone
+from loginApp.models.location.locationDetail import LocationDetail
+from django.contrib.auth.models import User
+from django.shortcuts import render
 
 
 
 
 logger = logging.getLogger(__name__)
+
+
+
 
 def superuser_check(user):
     return user.is_superuser
@@ -141,9 +148,9 @@ def login_view(request):
 
 
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 def logout_view(request):
-    if request.method == 'POST': 
+    if request.method in ['GET', 'POST']:
         auth_logout(request)  
         return redirect ('login')
     
@@ -155,7 +162,7 @@ def logout_view(request):
 
 def get_user_suggestions(request):
     if request.method == "GET":
-        query = request.GET.get("q", "")  # Get the 'q' parameter from the request
+        query = request.GET.get("q", "").strip()  # Get the 'q' parameter from the request
         
         if query:
             # Search for usernames starting with the query
@@ -177,16 +184,14 @@ def create_employeeData(request):
 
         try:
             if request.content_type == 'application/json':
-                logger.debug("Processing as JSON")
                 data = json.loads(request.body)
             else:
-                logger.debug("Processing as form data")
                 data = request.POST
-
-            logger.debug(f"Received data: {data}")
+                selected_name = data.get('name', '').strip()
 
             form = EmployeeForm(data) 
             if form.is_valid():
+                form.instance.name = selected_name
                 item = form.save()
                 return redirect('home')
             else:
@@ -240,13 +245,15 @@ def edit_employee(request, employee_id):
 #         return render(request, 'loginApp/projectsdetail.html', {'projects': projects})
 
 def projectsDetails(request):
-    projects = AddProjects.objects.all().values()
+    projects = AddProjects.objects.all()
+    print("Projects Retrieved:", projects)  # Debugging line
     if request.method == 'GET':
         if request.headers.get('Accept') == 'application/json' or request.GET.get('format') == 'json':
             return JsonResponse(list(projects), safe=False)
         else:
             return render(request, 'loginApp/projectsdetail.html', {'projects': projects})
 
+@user_passes_test(superuser_check)
 def createProjects(request):
     if request.method == 'POST':
         # Handle file uploads with request.FILES
@@ -255,8 +262,6 @@ def createProjects(request):
         if form.is_valid():
             project_id  = form.save()
             print(f"New project ID: {project_id.id}")
-
-
             return redirect('project_details')
         else:
             logger.error(f"Form errors: {form.errors}")
@@ -298,5 +303,117 @@ def edit_projects(request, project_id):
 def profile_view(request):
     return render(request, 'loginApp/profile.html')
 
-def employee_detail(request, employee_detail):
-    return render(request, 'loginApp/employeedetailpage.html')
+def employee_detail(request, employee_id):
+    employee = get_object_or_404(Employee_Model, id= employee_id)
+    return render(request, 'loginApp/employeedetailpage.html', {'employee': employee})
+
+
+@csrf_exempt
+def attendanceDetails(request):
+    if request.method == 'GET':
+        return render(request, 'loginApp/attendance.html')
+
+    elif request.method == "POST":
+        if not request.body:
+            return JsonResponse({"error": "Empty request body"}, status=400)
+
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            print("Received Data:", data)
+
+            # Extract values safely
+            timestamp_str = data.get('time')
+
+            if not timestamp_str:
+                return JsonResponse({"error": "Clock-in timestamp is missing"}, status=400)
+
+            # Convert timestamps
+            timestamp_dt = datetime.strptime(timestamp_str.rstrip("Z"), "%Y-%m-%dT%H:%M:%S.%f")
+
+            # Extract latitude and longitude safely
+            latitude = float(data.get('latitude', 0))
+            longitude = float(data.get('longitude', 0))
+
+            # Save to database
+            record = LocationDetail.objects.create(
+                user=request.user,
+                latitude=latitude,
+                longitude=longitude
+                # timestamp=timestamp_dt
+            )
+
+            print("Data saved successfully!")
+            return JsonResponse({'message': 'Data saved successfully', 'record_id': record.id})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+
+        except Exception as e:
+            print("Error:", str(e))
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+
+
+
+@csrf_exempt
+def attendanceDetailsClockout(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            print("All records for user:", [
+                (r.id, r.timestamp, r.timestamp_clock_out) 
+                for r in LocationDetail.objects.filter(user=request.user)
+            ])
+            print("Parsed JSON data:", data)
+
+            # Find the latest record WITHOUT clock-out
+            last_attendance = LocationDetail.objects.filter(
+                user=request.user,
+                timestamp_clock_out__isnull=True
+            ).order_by('-timestamp').first()  # Using 'timestamp' instead of 'timestamp_clock_in'
+
+            if not last_attendance:
+                return JsonResponse({'error': 'No active clock-in found'}, status=400)
+
+            # Update with clock-out data
+            last_attendance.timestamp_clock_out = datetime.fromisoformat(
+                data['timestamp_clock_out'].replace('Z', '+00:00')
+            )
+            last_attendance.latitude_clock_out = float(data['latitude_clock_out'])
+            last_attendance.longitude_clock_out = float(data['longitude_clock_out'])
+            last_attendance.save()
+
+            return JsonResponse({'message': 'Clock-out saved successfully'})
+
+        except Exception as e:
+            print("!!! ERROR:", str(e))
+            return JsonResponse({'error': str(e)}, status=500)
+
+
+def get_attendance_data(request):
+    data = LocationDetail.objects.all()
+    formatted_data = []
+
+    for entry in data:
+        formatted_data.append({
+            'user_id': entry.user_id,
+            'timestamp': entry.timestamp.strftime('%Y-%m-%dT%H:%M:%S'),  # ISO-ish format
+            'timestamp_clock_out': entry.timestamp_clock_out.strftime('%Y-%m-%dT%H:%M:%S') if entry.timestamp_clock_out else '',
+        })
+
+    return JsonResponse(formatted_data, safe=False)
+        
+
+def user_view(request):
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        return redirect('login')  # Redirect to the login page if the user is not logged in
+    
+    # Get the logged-in user
+    user = request.user
+    return render(request, 'loginApp/user.html', {'user': user})
+
+
+

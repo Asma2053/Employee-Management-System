@@ -11,10 +11,11 @@ urlpatterns = [
     # path('signup/', views.signUp, name="signup"),
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
-    path('home/', views.home, name="home"),
+    path('employee_list/', views.home, name="employee_list"),
     path('profile/', views.profile_view, name='profile'),
 
-
+    #get particular user
+    path('user/', views.user_view, name = "user"),
 
     #for employees 
     path('create/', views.create_employeeData, name="create_employeeData"),
@@ -32,9 +33,15 @@ urlpatterns = [
     path('projectsdetails/', views.projectsDetails, name="project_details"),
     path('delete_projects/<int:project_id>/', views.delete_project, name='delete_project'),
     path('create_projects/', views.createProjects, name="create_projects"),
-    path('edit_projects/<int:project_id>/', views.edit_projects, name='edit_projects')
+    path('edit_projects/<int:project_id>/', views.edit_projects, name='edit_projects'),
 
 
+    # #for attendance
+    path('attendancedetails/', views.attendanceDetails, name="attendance_details"),
+    #for attendance clockout
+    path('attendancedetailsclockout/', views.attendanceDetailsClockout, name="attendance_details_clock_out"),
+    #to fetch attendance data
+    path('api/attendance/', views.get_attendance_data, name='get_attendance_data'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

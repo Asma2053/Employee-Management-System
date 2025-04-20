@@ -1,0 +1,28 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:icalendar-ruby
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Asma Subedi Calendar (Canvas)
+X-WR-CALDESC:Calendar events for the user\, Asma Subedi
+BEGIN:VEVENT
+DTSTAMP:20250121T055100Z
+UID:event-assignment-3292
+DTSTART;VALUE=DATE;VALUE=DATE:20250126
+CLASS:PUBLIC
+DESCRIPTION:Decide your project topic and upload the Proposal\n\n \n\nTemp
+ late: [Capstone_Project_Proposal.pptx] (https://na.instructure.com/course
+ s/177/files/36671?wrap=1)
+SEQUENCE:0
+SUMMARY:Proposal [Capstone Projec]
+URL;VALUE=URI:https://na.instructure.com/calendar?include_contexts=course_1
+ 77&month=01&year=2025#assignment_3292
+X-ALT-DESC;FMTTYPE=text/html:<p>Decide your project topic and upload the Pr
+ oposal</p>\n<p>&nbsp\;</p>\n<p>Template:&nbsp\;<a class="instructure_file_
+ link instructure_scribd_file inline_disabled" title="Capstone_Project_Prop
+ osal.pptx" href="https://na.instructure.com/courses/177/files/36671?wrap=1
+ " target="_blank" data-canvas-previewable="false" data-api-endpoint="https
+ ://na.instructure.com/api/v1/courses/177/files/36671" data-api-returntype=
+ "File">Capstone_Project_Proposal.pptx</a></p>
+END:VEVENT
+END:VCALENDAR

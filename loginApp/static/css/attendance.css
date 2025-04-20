@@ -1,0 +1,39 @@
+.button-container {
+    position: absolute;
+    /* Position relative to the nearest positioned ancestor */
+    right: 20px;
+    /* Moves the button to the right */
+    top: 0px;
+    /* Keeps it aligned with the content */
+    display: flex;
+    gap: 10px;
+    /* Adds spacing between buttons */
+}
+
+.button-container button {
+    padding: 5px 10px;
+    /* Make buttons smaller */
+    font-size: 12px;
+    /* Reduce text size */
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007BFF;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #218838;
+}

@@ -2,17 +2,23 @@
 <html lang="en">
 
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Projects</title>
+    <title>Add Project</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/edit_project.css' %}">
 </head>
 
 <body>
-    <form method="post" enctype="multipart/form-data"  action="{% url 'create_projects' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+    <div class="edit-container">
+        <form method="post" enctype="multipart/form-data" action="{% url 'create_projects' %}">
+            <h2>Add Project</h2>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </body>
 
 </html>
+

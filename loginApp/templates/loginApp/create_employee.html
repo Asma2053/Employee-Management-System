@@ -1,3 +1,8 @@
+{% extends 'loginApp/base.html' %}
+{% load static %}
+
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,21 +12,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Employee</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/employee_search.css' %}">
-    <script src="{% static 'js/create_employee.js' %}"></script>
-
+    <script src="{% static 'js/create_employee.js' %}" defer></script>
 </head>
 
 <body>
     <h1>Add Employee</h1>
     <form method="post" action="{% url 'create_employeeData' %}">
         {% csrf_token %}
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" placeholder="Search for a user">
-        <div id="suggestions"></div>
-        <br>
-        {{ form.as_p }}
+    
+        <!-- Name Field -->
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <div class="input-wrapper">
+                <input type="text" name="name" id="name" placeholder="Search for a user" class="text-input" autocomplete="off">
+                <div id="suggestions"></div>
+            </div>
+        </div>
+
+        <!-- Salary Field -->
+        <div class="form-group">
+            <label for="salary">Salary:</label>
+            {{ form.salary }}
+        </div>
+    
+        <!-- Position Field -->
+        <div class="form-group">
+            <label for="position">Position:</label>
+            {{ form.position }}
+        </div>
+    
+        <!-- Department Field -->
+        <div class="form-group">
+            <label for="department">Department:</label>
+            {{ form.department }}
+        </div>
+    
+        <!-- Contact Number Field -->
+        <div class="form-group">
+            <label for="contact_number">Contact Number:</label>
+            {{ form.contact_number }}
+        </div>
+    
+        <!-- Hiring Date Field -->
+        <div class="form-group">
+            <label for="hiring_date">Hiring Date:</label>
+            {{ form.hiring_date }}
+        </div>
+    
         <button type="submit">Submit</button>
     </form>
 </body>
 
 </html>
+
+{% endblock %}

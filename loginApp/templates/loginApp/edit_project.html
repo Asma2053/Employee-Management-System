@@ -5,14 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Project</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/edit_project.css' %}">
 </head>
 
 <body>
-    <form method="POST">
+    <div class="edit-container">
+        <h2>Edit Project</h2>
+        <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Save Changes</button>
-    </form>
+        </form>
+    </div>
+    
 </body>
 
 </html>

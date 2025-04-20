@@ -1,4 +1,3 @@
-// Define the function before attaching event listeners
 function fetchSuggestions() {
     const nameInput = document.getElementById("name");
     const suggestionsBox = document.getElementById("suggestions");
@@ -10,19 +9,18 @@ function fetchSuggestions() {
             .then(response => response.json())
             .then(data => {
                 suggestionsBox.innerHTML = "";
-                if (data.suggestions && data.suggestions.length > 0) {  // Ensure 'suggestions' exists in the response
+                if (data.suggestions && data.suggestions.length > 0) {
                     data.suggestions.forEach(user => {
                         const suggestion = document.createElement("div");
-                        suggestion.textContent = user;  // Directly use 'user' since it's a string
+                        suggestion.textContent = user;
                         suggestion.style.cursor = "pointer";
                         suggestion.addEventListener("click", function () {
-                            nameInput.value = user;  // Use 'user' as it's a string now
-                            suggestionsBox.innerHTML = "";  // Clear suggestions after selection
+                            nameInput.value = user;  // Store selected name
+                            suggestionsBox.innerHTML = "";  // Clear suggestions
                         });
                         suggestionsBox.appendChild(suggestion);
                     });
                 } else {
-                    console.log("No results found"); // Debugging
                     suggestionsBox.innerHTML = "<p>No results found</p>";
                 }
             })
@@ -36,7 +34,5 @@ function fetchSuggestions() {
 
 document.addEventListener("DOMContentLoaded", function () {
     const nameInput = document.getElementById("name");
-    const suggestionsBox = document.getElementById("suggestions");
-
-    nameInput.addEventListener("input", fetchSuggestions);  // Use input event instead of keyup
+    nameInput.addEventListener("input", fetchSuggestions); // Trigger on input event
 });

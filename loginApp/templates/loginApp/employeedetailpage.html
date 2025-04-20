@@ -1,3 +1,5 @@
+
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +26,6 @@
         <div class="actions">
             <a href="{% url 'edit_employee' employee.id %}" class="btn btn-edit">Edit</a>
             <a href="{% url 'delete_employee' employee.id %}" class="btn btn-delete">Delete</a>
-            <!-- <a href="{% url 'home' %}" class="btn btn-back">Back to Home</a> -->
         </div>
     </div>
 

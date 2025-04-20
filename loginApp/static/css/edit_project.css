@@ -1,0 +1,117 @@
+/* General Page Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Form Container */
+.edit-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    /* Increased width */
+    text-align: left;
+}
+
+/* Form Headings */
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Form Fields */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Ensures Labels and Inputs Align */
+.form-group {
+    display: flex;
+    align-items: center;
+    /* Centers items vertically */
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Centered Labels */
+.form-group label {
+    width: 35%;
+    /* Adjust label width */
+    font-weight: bold;
+    text-align: center;
+    /* Center the text horizontally */
+    display: flex;
+    align-items: center;
+    /* Center the text vertically */
+    justify-content: center;
+    /* Ensure text stays in the middle */
+}
+
+/* Input Fields */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 60%;
+    /* Increase width for inputs */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Submit Button */
+button {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 15px;
+    width: 100%;
+}
+
+/* Hover Effect */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .edit-container {
+        width: 90%;
+    }
+
+    .form-group {
+        flex-direction: column;
+        align-items: center;
+        /* Centers labels on smaller screens */
+    }
+
+    .form-group label {
+        width: 100%;
+        text-align: center;
+        /* Keep the label centered */
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+    }
+}

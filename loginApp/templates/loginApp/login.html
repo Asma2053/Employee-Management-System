@@ -1,25 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h3>
-        Login Page
-    </h3>
-    
-    <p></p>
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" name="username" id="usernamae" placeholder="Enter a username"><br><br>
-        <input type="password" name="password" id="password" placeholder="Create a password"><br><br>
-        <button type="submit">Log In</button><br>
-        <p></p>
-        <p></p>
-       
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* Full-page styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    </form>
+        /* Login container */
+        .login-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        /* Title */
+        .login-container h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Input fields */
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Button */
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        /* Button hover effect */
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Additional options */
+        .login-container p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-container a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h3>Login</h3>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" id="username" placeholder="Enter your username" required><br>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required><br>
+            <button type="submit">Log In</button>
+        </form>
+
+      
+    </div>
+
 </body>
+
 </html>

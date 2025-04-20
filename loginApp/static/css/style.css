@@ -133,16 +133,33 @@ body {
 
 /* Main Content */
 .home {
-    position: absolute;
-    top: 0;
-    left: 250px;
-    height: 100vh;
+    position: relative;
+    min-height: 100vh;
     width: calc(100% - 250px);
+    min-width: 300px;
+    /* Prevent extreme shrinking */
     background-color: var(--body-color);
     transition: var(--tran-05);
+    padding: 20px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
 }
 
+/* Adjust when sidebar is collapsed */
 .sidebar.close~.home {
-    left: 78px;
     width: calc(100% - 78px);
+    min-width: calc(100% - 78px);
+    /* Ensure the content still has width */
+}
+
+#page-content-wrapper {
+    transition: var(--tran-05);
+    width: calc(100% - 250px);
+    margin-left: 250px;
+}
+
+.sidebar.close~#page-content-wrapper {
+    width: calc(100% - 88px);
+    margin-left: 88px;
 }

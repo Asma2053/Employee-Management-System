@@ -5,15 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Employee</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/edit_table.css' %}">
 </head>
 
 <body>
-    <h2>Edit Employee</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save Changes</button>
-    </form>
+    <div class="edit-container">
+        <h2>Edit Employee</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
 </body>
 
 </html>
