@@ -1,0 +1,66 @@
+{% extends 'loginApp/base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Your Leave History</h2>
+    
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Leave Records
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Leave Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Days</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for leave in leave_requests %}
+                        <tr>
+                            <td>
+                                <span
+                                    class="badge bg-{% if leave.leave_type == 'Sick' %}danger{% elif leave.leave_type == 'Vacation' %}info{% else %}secondary{% endif %}">
+                                    {{ leave.leave_type }}
+                                </span>
+                            </td>
+                            <td>{{ leave.start_date|date:"M d, Y" }}</td>
+                            <td>{{ leave.end_date|date:"M d, Y" }}</td>
+                            <td>
+                                <span
+                                    class="badge rounded-pill bg-{% if leave.status == 'Approved' %}success{% elif leave.status == 'Rejected' %}danger{% else %}warning text-dark{% endif %}">
+                                    {{ leave.status }}
+                                </span>
+                            </td>
+                            <td>{{ leave.end_date|timeuntil:leave.start_date }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No leave requests found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+
+    .badge {
+        font-size: 0.85em;
+        padding: 0.35em 0.65em;
+    }
+</style>
+{% endblock %}

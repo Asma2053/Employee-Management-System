@@ -1,0 +1,99 @@
+{% extends 'loginApp/base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Leave Requests Management</h1>
+    
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-user-clock me-1"></i>
+            Pending Approvals
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Leave Type</th>
+                            <th>Period</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for leave in leave_requests %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm me-3">
+                                        <span class="avatar-title bg-primary rounded-circle">
+                                            {{ leave.employee.username|first|upper }}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ leave.employee.username }}</h6>
+                                        <small class="text-muted">{{ leave.date_requested|timesince }} ago</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ leave.leave_type }}</td>
+                            <td>
+                                {{ leave.start_date|date:"M d" }} - {{ leave.end_date|date:"M d" }}
+                                <br><small class="text-muted">{{ leave.end_date|timeuntil:leave.start_date }}</small>
+                            </td>
+                            <td class="text-truncate" style="max-width: 200px;">{{ leave.reason }}</td>
+                            <td>
+                                <span
+                                    class="badge bg-{% if leave.status == 'Approved' %}success{% elif leave.status == 'Rejected' %}danger{% else %}warning text-dark{% endif %}">
+                                    {{ leave.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if leave.status == 'Pending' %}
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{% url 'approve_leave' leave.id %}" class="btn btn-success">
+                                        <i class="bi bi-check-lg"></i> Approve
+                                    </a>
+                                    <a href="{% url 'reject_leave' leave.id %}" class="btn btn-danger">
+                                        <i class="bi bi-x-lg"></i> Reject
+                                    </a>
+                                </div>
+                                {% else %}
+                                <span class="text-muted">Processed</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No pending leave requests</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-sm {
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .avatar-title {
+        color: white;
+        font-weight: bold;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+</style>
+{% endblock %}

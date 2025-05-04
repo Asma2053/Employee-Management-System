@@ -1,0 +1,111 @@
+/* Common Table Styling */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: auto;
+}
+
+thead th {
+    color: white;
+    background-color: #007BFF;
+    font-weight: bold;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid #444;
+    /* Thicker and darker bottom border */
+    border-right: 1px solid #444;
+    /* Add visible column lines */
+}
+
+thead th:last-child {
+    border-right: none;
+    /* Remove last column line */
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #aaa;
+    /* Light gray row lines */
+    border-right: 1px solid #444;
+    /* Dark gray vertical column lines */
+}
+
+td:last-child,
+th:last-child {
+    border-right: none;
+    /* No line after the last column */
+}
+
+/* Alternating Row Colors */
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #e6f2ff;
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background-color: #cce5ff !important;
+    transition: 0.3s;
+}
+
+/* Button styling */
+button {
+    padding: 10px 18px;
+    /* Larger padding */
+    font-size: 15px;
+    /* Slightly bigger font */
+    border-radius: 6px;
+    /* Smoother corners */
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* Primary button (e.g., delete) */
+.btn-primary,
+a.btn-primary {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover,
+a.btn-primary:hover {
+    background-color: #c82333;
+}
+
+/* Secondary button (e.g., edit) */
+.btn-secondary,
+a.btn-secondary {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover,
+a.btn-secondary:hover {
+    background-color: #0056b3;
+}
+

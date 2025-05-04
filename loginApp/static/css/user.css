@@ -1,0 +1,236 @@
+/* ===== Header (20% of viewport height) ===== */
+.user-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 20vh;
+    min-height: 120px;
+    padding: 1.5rem 2rem;
+    background-color: #1f4e79;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.user-header .welcome-text h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+.user-header .user-nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.user-header .user-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.user-header .user-nav a:hover,
+.user-header .user-nav a.active {
+    border-bottom-color: #fff;
+}
+
+/* ===== Main Content ===== */
+.user-main {
+    display: flex;
+    flex-direction: column;
+    /* stack circles above cards */
+    gap: 20px;
+    position: relative;
+    padding: 2rem;
+    background: #f9f9f9;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+/* Clock buttons */
+.button-wrapper {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 20;
+    /* sit above cards */
+}
+
+/* Secondary welcome text (if used) */
+.user-main .welcome-text-main {
+    margin-top: 4rem;
+    text-align: left;
+}
+
+.user-main .welcome-text-main h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.6rem;
+    color: #333;
+}
+
+/* ===== Circles ===== */
+.circle-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin: 20px 0;
+    z-index: 20;
+}
+
+.circle-wrapper {
+    text-align: center;
+    margin: 0 10px;
+}
+
+.circle {
+    width: 80px;
+    height: 80px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.circle i {
+    font-size: 32px;
+    color: #333;
+}
+
+.circle-name {
+    display: block;
+    margin-top: 8px;
+    white-space: nowrap;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.circle:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+/* ===== Cards ===== */
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Row for just the two cards */
+.cards-row {
+    display: flex;
+    gap: 20px;
+}
+
+.user-card,
+.events-card {
+    flex: 1;
+}
+
+/* Card headings */
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+/* User Details */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.detail-value {
+    color: #333;
+}
+
+/* Events List */
+.events-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.events-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.events-list li:last-child {
+    border-bottom: none;
+}
+
+.event-title {
+    font-weight: 500;
+    color: #444;
+}
+
+.event-date {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* ===== Button styles ===== */
+.btn-primary,
+.btn-secondary {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .user-main {
+        flex-direction: column;
+    }
+
+    .user-card,
+    .events-card {
+        flex: 0 0 100%;
+    }
+}

@@ -1,8 +1,18 @@
 /* General styling */
-.home {
+/* .home {
     font-family: Arial, sans-serif;
     padding: 20px;
     background-color: #f5f5f5;
+} */
+
+.home {
+    width: 100vw;
+    /* Use full viewport width */
+    max-width: 100%;
+    overflow-x: auto;
+    /* Enable horizontal scroll if needed */
+    box-sizing: border-box;
+    /* Ensure padding doesn't cause overflow */
 }
 
 .button-wrapper {
@@ -44,7 +54,7 @@ thead th a:visited {
 th,
 td {
     padding: 12px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd !important;
 }
 
 /* Alternating Row Colors */

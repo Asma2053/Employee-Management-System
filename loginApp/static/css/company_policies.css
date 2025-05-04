@@ -1,0 +1,90 @@
+/* company_policies.css */
+
+body {
+    background-color: #f5f7fa;
+}
+
+.max-w-6xl {
+    max-width: 72rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.p-6 {
+    padding: 1.5rem;
+}
+
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
+
+.border-b {
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.pb-2 {
+    padding-bottom: 0.5rem;
+}
+
+.text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.text-gray-700 {
+    color: #4a5568;
+}
+
+.grid {
+    display: grid;
+}
+
+.gap-6 {
+    grid-gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .lg\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.rounded-2xl {
+    border-radius: 1rem;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hover\:shadow-lg:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+.transition-shadow {
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.space-y-2>*+* {
+    margin-top: 0.5rem;
+}

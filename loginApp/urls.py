@@ -12,7 +12,7 @@ urlpatterns = [
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
     path('employee_list/', views.home, name="employee_list"),
-    path('profile/', views.profile_view, name='profile'),
+    # path('profile/', views.profile_view, name='profile'),
 
     #get particular user
     path('user/', views.user_view, name = "user"),
@@ -42,6 +42,24 @@ urlpatterns = [
     path('attendancedetailsclockout/', views.attendanceDetailsClockout, name="attendance_details_clock_out"),
     #to fetch attendance data
     path('api/attendance/', views.get_attendance_data, name='get_attendance_data'),
+
+    # user detail page
+    path('profile/', views.user_profile, name='user_profile'),
+
+    path('export/excel/', views.export_attendance_excel, name='export_attendance_excel'),
+
+    #leave
+    path('request-leave/', views.request_leave, name='request_leave'),
+    path('leave-history/', views.employee_leave_history, name='employee_leave_history'),
+
+    # Admin URLs
+    path('leave-requests/', views.admin_leave_requests, name='admin_leave_requests'),
+    path('approve-leave/<int:leave_id>/', views.approve_leave, name='approve_leave'),
+    path('reject-leave/<int:leave_id>/', views.reject_leave, name='reject_leave'),
+
+    #required homepage company directory and policies
+    path('company-policies/', views.company_policies, name='company_policies'),
+    path('org-chart/', views.org_chart, name='org_chart'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

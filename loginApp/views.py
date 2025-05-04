@@ -28,14 +28,17 @@ from datetime import datetime, timezone
 from loginApp.models.location.locationDetail import LocationDetail
 from django.contrib.auth.models import User
 from django.shortcuts import render
+from django.contrib.auth import update_session_auth_hash
+from openpyxl import Workbook
+from django.http import HttpResponse
+from loginApp.models.projects.LeaveRequest import LeaveRequest
+from loginApp.models.projects.LeaveRequestForm import LeaveRequestForm
+
 
 
 
 
 logger = logging.getLogger(__name__)
-
-
-
 
 def superuser_check(user):
     return user.is_superuser
@@ -43,82 +46,9 @@ def superuser_check(user):
 @login_required
 def home(request):
     employees = Employee_Model.objects.all()
-    return render(request, 'loginApp/home.html', {'employees': employees})
+    return render(request, 'loginApp/employeedetailpage.html', {'employees': employees})
 
 @csrf_exempt
-# def signUp(request):
-    # if request.method == 'POST':
-    #     logging.debug(f"Request content type: {request.content_type}")
-    #     logging.debug(f"Request body: {request.body}")
-
-    #     try:
-    #         # Parse input data
-    #         if request.content_type == 'application/json':
-    #             data = json.loads(request.body)
-    #         else:
-    #             data = request.POST
-
-    #         logging.debug(f"Received data: {data}")
-
-    #         username = data.get('username')
-    #         email = data.get('email')
-    #         password1 = data.get('password')
-    #         password2 = data.get('password2')
-
-    #         # Check if username is empty
-    #         if not username:
-    #             return HttpResponse("Username cannot be empty", status=400)
-
-    #         # Check if passwords match
-    #         if password1 != password2:
-    #             return HttpResponse("Passwords do not match", status=400)
-
-    #         # Validate email format (basic check)
-    #         if '@' not in email:
-    #             return HttpResponse("Invalid email format", status=400)
-
-    #         # Attempt to create a new user
-    #         try:
-    #             user = User.objects.create_user(username, email, password1)
-    #             user.save()
-    #             logging.debug(f"User created with ID: {user.id}")
-
-    #             return redirect('login')
-    #         except IntegrityError:
-    #             logging.error("Username already exists.")
-    #             return HttpResponse("Username already exists. Please choose a different username", status=400)
-    #         except Exception as e:
-    #             logging.error(f"Error creating user: {e}")
-    #             return HttpResponse(f"An error occurred: {e}", status=500)
-        
-    #     except json.JSONDecodeError as e:
-    #         logging.error(f"Invalid JSON received: {e}")
-    #         return HttpResponse("Invalid JSON", status=400)
-    #     except Exception as e:
-    #         logging.error(f"Unexpected error: {e}")
-    #         return HttpResponse(f"An unexpected error occurred: {e}", status=500)
-
-    # return render(request, 'loginApp/signup.html')
-
-
-
-# def login_view(request):
-#     if request.method == 'POST':
-#          username = request.POST.get('username')
-#          password = request.POST.get('password')
-
-#          user_status = authenticate(request, username = username, password = password)
-
-#          if user_status is not None:
-#             login(request, user_status)
-#             return redirect('home')
-#          else:
-#             return HttpResponse ("Credentials are not valid. Please enter valid credentials")
-         
-#     # handling wrong request
-#     return render(request,'loginApp/login.html')
-
-
 def login_view(request):
     if request.method == 'POST':
         # Check for JSON Content-Type
@@ -138,7 +68,7 @@ def login_view(request):
 
         if user_status is not None:
             login(request, user_status)
-            return redirect('home')
+            return redirect('user')
             print(JsonResponse({"message": "Login successful"}, status=200))
         else:
             return JsonResponse({"error": "Invalid credentials"}, status=401)
@@ -239,11 +169,6 @@ def edit_employee(request, employee_id):
     return render(request, 'loginApp/edit_employees.html', {'form': form})
 
 
-# def projectsDetails(request):
-#     if request.method == 'GET':
-#         projects = AddProjects.objects.all().values()  
-#         return render(request, 'loginApp/projectsdetail.html', {'projects': projects})
-
 def projectsDetails(request):
     projects = AddProjects.objects.all()
     print("Projects Retrieved:", projects)  # Debugging line
@@ -308,52 +233,84 @@ def employee_detail(request, employee_id):
     return render(request, 'loginApp/employeedetailpage.html', {'employee': employee})
 
 
+# @csrf_exempt
+# def attendanceDetails(request):
+#     if request.method == 'GET':
+#         return render(request, 'loginApp/attendance.html')
+
+#     elif request.method == "POST":
+#         if not request.body:
+#             return JsonResponse({"error": "Empty request body"}, status=400)
+
+#         try:
+#             data = json.loads(request.body.decode('utf-8'))
+#             print("Received Data:", data)
+
+#             # Extract values safely
+#             timestamp_str = data.get('time')
+
+#             if not timestamp_str:
+#                 return JsonResponse({"error": "Clock-in timestamp is missing"}, status=400)
+
+#             # Convert timestamps
+#             timestamp_dt = datetime.strptime(timestamp_str.rstrip("Z"), "%Y-%m-%dT%H:%M:%S.%f")
+
+#             # Extract latitude and longitude safely
+#             latitude = float(data.get('latitude', 0))
+#             longitude = float(data.get('longitude', 0))
+
+#             # Save to database
+#             record = LocationDetail.objects.create(
+#                 user=request.user,
+#                 latitude=latitude,
+#                 longitude=longitude
+#                 # timestamp=timestamp_dt
+#             )
+
+#             print("Data saved successfully!")
+#             return JsonResponse({'message': 'Data saved successfully', 'record_id': record.id})
+
+#         except json.JSONDecodeError:
+#             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+
+#         except Exception as e:
+#             print("Error:", str(e))
+#             return JsonResponse({'error': str(e)}, status=500)
+
+#     return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+
 @csrf_exempt
 def attendanceDetails(request):
-    if request.method == 'GET':
-        return render(request, 'loginApp/attendance.html')
-
-    elif request.method == "POST":
-        if not request.body:
-            return JsonResponse({"error": "Empty request body"}, status=400)
-
+    if request.method == 'POST':
         try:
             data = json.loads(request.body.decode('utf-8'))
-            print("Received Data:", data)
-
-            # Extract values safely
             timestamp_str = data.get('time')
-
             if not timestamp_str:
                 return JsonResponse({"error": "Clock-in timestamp is missing"}, status=400)
 
-            # Convert timestamps
             timestamp_dt = datetime.strptime(timestamp_str.rstrip("Z"), "%Y-%m-%dT%H:%M:%S.%f")
-
-            # Extract latitude and longitude safely
             latitude = float(data.get('latitude', 0))
             longitude = float(data.get('longitude', 0))
 
-            # Save to database
+            # Ensure user is authenticated
+            if not request.user.is_authenticated:
+                return JsonResponse({'error': 'User not authenticated'}, status=403)
+
             record = LocationDetail.objects.create(
                 user=request.user,
                 latitude=latitude,
-                longitude=longitude
-                # timestamp=timestamp_dt
+                longitude=longitude,
+                timestamp=timestamp_dt
             )
 
-            print("Data saved successfully!")
-            return JsonResponse({'message': 'Data saved successfully', 'record_id': record.id})
-
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+            return JsonResponse({'message': 'Clock-in successful', 'record_id': record.id})
 
         except Exception as e:
-            print("Error:", str(e))
+            print("Clock-in error:", str(e))
             return JsonResponse({'error': str(e)}, status=500)
 
-    return JsonResponse({'message': 'Method not allowed'}, status=405)
-
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
 
@@ -392,19 +349,23 @@ def attendanceDetailsClockout(request):
             return JsonResponse({'error': str(e)}, status=500)
 
 
-def get_attendance_data(request):
-    data = LocationDetail.objects.all()
-    formatted_data = []
+# def get_attendance_data(request):
+#     data = LocationDetail.objects.all()
+#     formatted_data = []
 
-    for entry in data:
-        formatted_data.append({
-            'user_id': entry.user_id,
-            'timestamp': entry.timestamp.strftime('%Y-%m-%dT%H:%M:%S'),  # ISO-ish format
-            'timestamp_clock_out': entry.timestamp_clock_out.strftime('%Y-%m-%dT%H:%M:%S') if entry.timestamp_clock_out else '',
-        })
+#     for entry in data:
+#         formatted_data.append({
+#             'user_id': entry.user_id,
+#             'timestamp': entry.timestamp.strftime('%Y-%m-%dT%H:%M:%S'),  # ISO-ish format
+#             'timestamp_clock_out': entry.timestamp_clock_out.strftime('%Y-%m-%dT%H:%M:%S') if entry.timestamp_clock_out else '',
+#         })
 
-    return JsonResponse(formatted_data, safe=False)
+#     return JsonResponse(formatted_data, safe=False)
         
+
+def get_attendance_data(request):
+    data = LocationDetail.objects.all().order_by('-timestamp')  # optional: latest first
+    return render(request, 'loginApp/attendance.html', {'attendance_data': data})
 
 def user_view(request):
     # Check if the user is authenticated
@@ -416,4 +377,128 @@ def user_view(request):
     return render(request, 'loginApp/user.html', {'user': user})
 
 
+@login_required
+def user_profile(request):
+    user = request.user
 
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if username:
+            user.username = username
+        if email:
+            user.email = email
+        if password:
+            user.set_password(password)
+            update_session_auth_hash(request, user)  # ⬅️ Keeps user logged in
+
+        user.save()
+        messages.success(request, 'Profile updated successfully!')
+        return redirect('user_profile')  # ⬅️ Redirect to same page
+
+    return render(request, 'loginApp/user_profile.html', {'user': user})
+
+
+def export_attendance_excel(request):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Attendance Records"
+
+    # Add header
+    ws.append(["Username", "Clock In", "Clock Out"])
+
+    # Get all attendance records
+    attendance_records = LocationDetail.objects.all()
+
+    for record in attendance_records:
+        clock_in = record.timestamp.replace(tzinfo=None) if record.timestamp else ""
+        clock_out = record.timestamp_clock_out.replace(tzinfo=None) if record.timestamp_clock_out else ""
+        ws.append([
+            record.user.username,
+            clock_in,
+            clock_out
+        ])
+
+    # Create HTTP response
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=attendance.xlsx'
+    wb.save(response)
+
+    return response
+
+
+
+#employee leave
+@login_required
+def request_leave(request):
+    if request.method == "POST":
+        form = LeaveRequestForm(request.POST)
+        if form.is_valid():
+            leave_request = form.save(commit=False)
+            leave_request.employee = request.user
+            leave_request.save()
+            return redirect('employee_leave_history')
+    else:
+        form = LeaveRequestForm()
+    return render(request, 'loginApp/request_leave.html', {'form': form})
+
+@login_required
+def employee_leave_history(request):
+    leave_requests = LeaveRequest.objects.filter(employee=request.user)
+    return render(request, 'loginApp/leave_history.html', {'leave_requests': leave_requests})
+
+
+@user_passes_test(superuser_check)
+def admin_leave_requests(request):
+    leave_requests = LeaveRequest.objects.all()
+    return render(request, 'loginApp/leave_requests.html', {'leave_requests': leave_requests})
+
+@user_passes_test(superuser_check)
+def approve_leave(request, leave_id):
+    leave_request = get_object_or_404(LeaveRequest, id=leave_id)
+    leave_request.status = 'Approved'
+    leave_request.save()
+    return redirect('admin_leave_requests')
+
+@user_passes_test(superuser_check)
+def reject_leave(request, leave_id):
+    leave_request = get_object_or_404(LeaveRequest, id=leave_id)
+    leave_request.status = 'Rejected'
+    leave_request.save()
+    return redirect('admin_leave_requests')
+
+
+
+@login_required
+def company_policies(request):
+    policy_sections = [
+        {
+            'number': 1,
+            'title': 'Code of Conduct',
+            'items': [
+                {'heading': 'Professionalism & Respect:', 'text': 'Treat everyone with courtesy. No harassment or discrimination.'},
+                {'heading': 'Integrity & Ethics:',    'text': 'Conduct business honestly. Disclose conflicts of interest.'},
+            ],
+        },
+        {
+            'number': 2,
+            'title': 'Attendance & Punctuality',
+            'items': [
+                {'heading': 'Work Hours:',          'text': '9 AM–5 PM, Mon–Fri. Clock in/out via the system.'},
+                {'heading': 'Late & Early:',        'text': 'Notify manager 1 hr before start if late or leaving early.'},
+                {'heading': 'Absence Reporting:',   'text': 'Report illness/emergencies at least 1 hr before shift.'},
+            ],
+        },
+        # … add sections 3–8 similarly …
+    ]
+    return render(request, 'loginApp/company_policies.html', {
+        'policy_sections': policy_sections
+    })
+
+@login_required
+def org_chart(request):
+    return render(request, 'loginApp/reference_docs.html')

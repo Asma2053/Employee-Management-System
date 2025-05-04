@@ -1,36 +1,99 @@
-
+{% extends 'loginApp/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Detail</title>
-    <!-- Link your CSS file -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+{% block content %}
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Employee Details</h2>
+    
 
-<body>
-    <div class="container">
-        <h1>Employee Details</h1>
-        <div class="employee-details">
-            <p><strong>Name:</strong> {{ employee.name }}</p>
-            <p><strong>Salary:</strong> ${{ employee.salary }}</p>
-            <p><strong>Position:</strong> {{ employee.position }}</p>
-            <p><strong>Department:</strong> {{ employee.department }}</p>
-            <p><strong>Contact Number:</strong> {{ employee.contact_number }}</p>
-            <p><strong>Hiring Date:</strong> {{ employee.hiring_date }}</p>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-users me-1"></i>
+            Employees List
         </div>
-
-        <div class="actions">
-            <a href="{% url 'edit_employee' employee.id %}" class="btn btn-edit">Edit</a>
-            <a href="{% url 'delete_employee' employee.id %}" class="btn btn-delete">Delete</a>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Salary</th>
+                            <th>Position</th>
+                            <th>Department</th>
+                            <th>Contact Number</th>
+                            <th>Hiring Date</th>
+                            {% if request.user.is_superuser %}
+                            <th>Actions</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in employees %}
+                        <tr>
+                            <td>{{ employee.name }}</td>
+                            <td>${{ employee.salary }}</td>
+                            <td>{{ employee.position }}</td>
+                            <td>{{ employee.department }}</td>
+                            <td>{{ employee.contact_number }}</td>
+                            <td class="hiring-date-cell">
+                                {{ employee.hiring_date }}
+                            </td>
+                            {% if request.user.is_superuser %}
+                            <td>
+                                <a href="{% url 'edit_employee' employee.id %}" class="btn btn-secondary btn-sm me-1">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <form method="POST" action="{% url 'delete_employee' employee.id %}"
+                                    style="display:inline;" onsubmit="return confirm('Delete this employee?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="{% if request.user.is_superuser %}7{% else %}6{% endif %}"
+                                class="text-center text-muted py-4">
+                                No employees found
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Add any JavaScript file if needed -->
-    <script src="{% static 'js/script.js' %}"></script>
-</body>
+    {% if request.user.is_superuser %}
+    <div class="mb-4">
+        <a href="{% url 'create_employeeData' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Employee
+        </a>
+    </div>
+    {% endif %}
+</div>
 
-</html>
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+
+    .badge {
+        font-size: 0.85em;
+        padding: 0.4em 0.75em;
+    }
+
+    .btn-sm i {
+        margin-right: 0.25em;
+    }
+
+    /* Example: color the hiring date */
+    .hiring-date-cell {
+        color: #264653;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}

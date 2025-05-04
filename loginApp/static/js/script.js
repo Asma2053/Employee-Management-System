@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const toggle = document.querySelector(".toggle");
     const searchBtn = document.querySelector(".search-box");
     const userImage = document.querySelector("#userImage"); 
+    const contentWrapper = document.getElementById('page-content-wrapper');
 
     if (!sidebar || !toggle) {
         console.error("Sidebar or toggle element is missing!");
@@ -13,11 +14,30 @@ document.addEventListener("DOMContentLoaded", function() {
     toggle.addEventListener("click", () => {
         console.log("Toggle clicked!");
         sidebar.classList.toggle("close"); // This will add or remove the "close" class to collapse/expand sidebar
+        contentWrapper.classList.toggle('collapsed');
         const message = sidebar.classList.contains("close")
             ? "Sidebar collapsed!"
             : "Sidebar expanded!";
-        // showToast(message); // Optionally display a toast message
+        showToast(message); // Optionally display a toast message
     });
+
+
+// toggle.addEventListener("click", () => {
+//     console.log("Toggle clicked!");
+//     sidebar.classList.toggle("close");
+
+//     const pageContent = document.querySelector("#page-content-wrapper");
+//     if (sidebar.classList.contains("close")) {
+//         pageContent.style.marginLeft = "88px";
+//     } else {
+//         pageContent.style.marginLeft = "250px";
+//     }
+
+//     const message = sidebar.classList.contains("close")
+//         ? "Sidebar collapsed!"
+//         : "Sidebar expanded!";
+//     // showToast(message); // Optional: keep this if needed
+// });
 
 
     // Open sidebar on search box click

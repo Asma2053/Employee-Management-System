@@ -1,54 +1,65 @@
 // Global variable to track the active clock-in
 let activeClockInId = null;
+let activeClockIn = false;
+
 
 function saveLocationData(time, latitude, longitude) {
+    console.log("📤 Sending clock-in data...", { time, latitude, longitude });
+
     fetch('/attendancedetails/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            time: time,
-            latitude: latitude,
-            longitude: longitude
-        })
+        body: JSON.stringify({ time, latitude, longitude })
     })
-    .then(response => {
-            if (!response.ok) return response.json().then(err => { throw err; });
-            response.json()})
+    .then(handleResponse)
     .then(data => {
-          alert("Clocked in successfully! Record ID: " + data.record_id);
+        alert("Clock-in successful!");  // Simplified message
+        console.log("✅ Clock-in response:", data);
+        activeClockInId = true;
         localStorage.setItem('activeClockInId', activeClockInId);
-        }) 
-    .catch(error => {
-
-        console.error("Error saving data:", error);
-        
-    });
+    })
+    .catch(handleError);
 }
 
 
-function buttonOneClick() {
+function handleResponse(response) {
+    if (!response.ok) {
+        return response.json().then(err => {
+            throw new Error(err.error || "Server error");
+        }).catch(() => {
+            throw new Error("Non-JSON response from server");
+        });
+    }
+    return response.json();
+}
 
-    if (activeClockInId) {
+function handleError(error) {
+    console.error("❌ API Error:", error);
+    alert(error.message || "Clock-in failed");
+}
+
+
+
+
+function buttonOneClick() {
+    if (activeClockIn) {
         alert("You're already clocked in!");
         return;
     }
-    // Get current time
-    const currentTime = new Date().toISOString();  
 
-    // Get latitude and longitude using geolocation API
+    const currentTime = new Date().toISOString();
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
 
-            console.log("Button One Clicked! Saving data...");
-            
-            // Only Button One calls saveLocationData()
+            console.log("📍 Location captured, saving clock-in...");
             saveLocationData(currentTime, latitude, longitude);
         }, function(error) {
-            alert("Geolocation not available: " + error.message);
+            alert("Geolocation error: " + error.message);
         });
     } else {
         alert("Geolocation is not supported by this browser.");

@@ -1,0 +1,44 @@
+{% extends 'loginApp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-modern-container">
+    <div class="profile-card">
+        <h2>User Profile</h2>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="flash-message">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="{% url 'user_profile' %}">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+
+            <div class="input-group">
+                <label for="joined">Joined Date</label>
+                <input type="text" id="joined" value="{{ user.date_joined|date:'Y-m-d H:i' }}" disabled>
+            </div>
+
+            <div class="input-group">
+                <label for="password">New Password <small>(optional)</small></label>
+                <input type="password" id="password" name="password">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-modern">Update Profile</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

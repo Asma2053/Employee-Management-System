@@ -1,0 +1,94 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <StartupObject></StartupObject>
+    <UserSecretsId>d3ec8513-6d62-4675-b166-6dbc51a4842e</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20190127132515_sistema_login.cs" />
+    <Compile Remove="Migrations\20190127132515_sistema_login.Designer.cs" />
+    <Compile Remove="Migrations\20190523005418_ChangeStructure.cs" />
+    <Compile Remove="Migrations\20190523005418_ChangeStructure.Designer.cs" />
+    <Compile Remove="Migrations\20190523005949_ChangeStructure.cs" />
+    <Compile Remove="Migrations\20190523005949_ChangeStructure.Designer.cs" />
+    <Compile Remove="Migrations\20190523010632_ChangeStructure.cs" />
+    <Compile Remove="Migrations\20190523010632_ChangeStructure.Designer.cs" />
+    <Compile Remove="Migrations\20190525013643_AddMoreTables.cs" />
+    <Compile Remove="Migrations\20190525013643_AddMoreTables.Designer.cs" />
+    <Compile Remove="Migrations\20190525014702_AddMoreTables.cs" />
+    <Compile Remove="Migrations\20190525014702_AddMoreTables.Designer.cs" />
+    <Compile Remove="Migrations\20190525014803_AddMoreTables.cs" />
+    <Compile Remove="Migrations\20190525014803_AddMoreTables.Designer.cs" />
+    <Compile Remove="Migrations\20190525014909_Initial.cs" />
+    <Compile Remove="Migrations\20190525014909_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190530002831_roles.cs" />
+    <Compile Remove="Migrations\20190530002831_roles.Designer.cs" />
+    <Compile Remove="Migrations\20190612231922_Initial.cs" />
+    <Compile Remove="Migrations\20190612231922_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190619003257_Initial.cs" />
+    <Compile Remove="Migrations\20190619003257_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190628231157_Initial.cs" />
+    <Compile Remove="Migrations\20190628231157_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190628231613_Initial.cs" />
+    <Compile Remove="Migrations\20190628231613_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190702042402_Initial.cs" />
+    <Compile Remove="Migrations\20190702042402_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190702042534_Initial.cs" />
+    <Compile Remove="Migrations\20190702042534_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190702042725_Initial.cs" />
+    <Compile Remove="Migrations\20190702042725_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190702042847_Initial.cs" />
+    <Compile Remove="Migrations\20190702042847_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190704000605_UpdateBD.cs" />
+    <Compile Remove="Migrations\20190704000605_UpdateBD.Designer.cs" />
+    <Compile Remove="Data\Entities\MatchPoints.cs" />
+    <Compile Remove="Migrations\20191007235218_ChangeRank.cs" />
+    <Compile Remove="Migrations\20191007235218_ChangeRank.Designer.cs" />
+    <Compile Remove="Migrations\20191202103153_Database.cs" />
+    <Compile Remove="Migrations\20191202103153_Database.Designer.cs" />
+    <Compile Remove="Migrations\20191221055113_StartUp.cs" />
+    <Compile Remove="Migrations\20191221055113_StartUp.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Geolocation.NetStandard" Version="1.1.1" />
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="2.3.0" />
+    <PackageReference Include="MailKit" Version="2.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.App">
+      <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
+      <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.16" />
+    <PackageReference Include="ncrontab" Version="3.3.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ImageWriter\ImageWriter.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
