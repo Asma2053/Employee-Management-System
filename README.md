@@ -49,8 +49,7 @@ A comprehensive web-based Employee Management System developed using **Python (D
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/ems-django.git
-   cd ems-django
+   git clone https://github.com/Asma2053/Employee-Management-System.git
 
 2. Install Dependencies
     install pip
